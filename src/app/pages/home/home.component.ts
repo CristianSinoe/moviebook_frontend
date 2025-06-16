@@ -16,6 +16,13 @@ export class HomeComponent {
   username: string = '';
   tweets: Tweet[] = [];
   reactionCounts: { [tweetId: number]: { [reaction: string]: number } } = {};
+  activeTweetId: number | null = null;
+  editModalVisible = false;
+editedTweetId: number | null = null;
+editedText: string = '';
+editedImage: File | null = null;
+editImageFile: File | null = null;
+removeImage: boolean = false;
 
   constructor(
     private router: Router,
@@ -63,6 +70,80 @@ export class HomeComponent {
   logout() {
   this.storageService.signOut();
   this.router.navigate(['']);
+}
+toggleTweetOptions(tweetId: number) {
+  this.activeTweetId = this.activeTweetId === tweetId ? null : tweetId;
+}
+
+onDeleteTweet(tweetId: number) {
+  if (confirm('¿Estás seguro de que deseas eliminar este tweet? 🗑️')) {
+    this.tweetService.deleteTweet(tweetId).subscribe({
+      next: () => {
+        this.tweets = this.tweets.filter(t => t.id !== tweetId);
+      },
+      error: err => console.error('Error al eliminar tweet:', err)
+    });
+  }
+}
+
+onEditTweet(tweet: Tweet): void {
+  this.editedTweetId = tweet.id;
+  this.editedText = tweet.tweet;
+  this.editedImage = null;
+  this.editModalVisible = true;
+}
+
+onEditImageSelected(event: any): void {
+  const file = event.target.files[0];
+  if (file && file.type.startsWith('image/')) {
+    this.editedImage = file;
+  }
+}
+
+cancelEdit(): void {
+  this.editModalVisible = false;
+  this.editedTweetId = null;
+  this.editedText = '';
+  this.editedImage = null;
+}
+
+confirmEditTweet(): void {
+  if (this.editedTweetId === null) return;
+
+  const formData = new FormData();
+  formData.append('tweet', this.editedText);
+
+  // ✅ Agregar nueva imagen si se seleccionó
+  if (this.editedImage) {
+    formData.append('image', this.editedImage);
+  }
+
+  // ✅ Indicador para eliminar la imagen actual si el checkbox está activado
+  formData.append('removeImage', this.removeImage.toString());
+
+  // 🔄 Llamar al servicio de actualización
+  this.tweetService.updateTweet(this.editedTweetId, formData).subscribe({
+    next: () => {
+      this.getTweets();       // refresca los tweets
+      this.cancelEdit();      // cierra el modal y limpia estados
+    },
+    error: (err: any) => {
+      console.error('Error al actualizar el tweet:', err);
+    }
+  });
+}
+
+onRemoveImageChange(): void {
+  if (this.removeImage) {
+    this.editedImage = null;
+  }
+}
+
+toggleRemoveImage(): void {
+  this.removeImage = !this.removeImage;
+  if (this.removeImage) {
+    this.editedImage = null;
+  }
 }
 
 }

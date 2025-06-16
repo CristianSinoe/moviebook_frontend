@@ -36,4 +36,27 @@ export class TweetService {
 
     return this.http.post<Tweet>(`${this.apiURL}/create`, formData, { headers });
   }
+
+  // Eliminar tweet
+deleteTweet(tweetId: number): Observable<any> {
+  const token = this.storageService.getToken();
+  const headers = new HttpHeaders({
+    'Authorization': 'Bearer ' + token
+  });
+
+  return this.http.delete(`${this.apiURL}/${tweetId}`, { headers });
+}
+
+// ✅ Actualizar tweet
+  updateTweet(tweetId: number, formData: FormData): Observable<any> {
+    const token = this.storageService.getToken();
+    if (!token) return throwError(() => new Error('Token JWT no disponible'));
+
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    return this.http.put(`${this.apiURL}/${tweetId}`, formData, { headers });
+  }
+
 }

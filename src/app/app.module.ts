@@ -16,6 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -38,6 +39,7 @@ import { HttpClientModule } from '@angular/common/http';
     InputTextModule,
     ButtonModule,
     BrowserAnimationsModule,
+    DialogModule,
     HttpClientModule
   ],
   providers: [],
