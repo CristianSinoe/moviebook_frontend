@@ -1,0 +1,15 @@
+<div class="mb-3 mt-4">
+  <h4 class="text-md text-green-800 font-semibold mb-2">Comentarios:</h4>
+
+  <div *ngIf="comments.length === 0" class="text-gray-500">
+    Aún no hay comentarios.
+  </div>
+
+  <div *ngFor="let comment of comments" class="mb-1 text-sm p-2 border-round bg-gray-50 shadow-sm">
+    <span class="font-bold text-blue-700">{{ comment.username }}</span>
+    <span class="text-gray-800 ml-1">{{ comment.content }}</span>
+    <div *ngIf="comment.createdAt" class="text-xs text-gray-400 mt-1">
+      {{ comment.createdAt | date:'short' }}
+    </div>
+  </div>
+</div>
