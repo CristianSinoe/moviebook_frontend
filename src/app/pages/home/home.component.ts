@@ -91,8 +91,10 @@ onEditTweet(tweet: Tweet): void {
   this.editedText = tweet.tweet;
   this.editedImage = null;
   this.editModalVisible = true;
-}
 
+  // 👇 Cerrar menú de opciones
+  this.activeTweetId = null;
+}
 onEditImageSelected(event: any): void {
   const file = event.target.files[0];
   if (file && file.type.startsWith('image/')) {
