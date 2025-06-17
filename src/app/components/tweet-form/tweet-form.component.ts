@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { TweetService } from '../../services/tweet.service';
+import { Tweet } from '../../models/tweets/Tweet';
 
 @Component({
   selector: 'app-tweet-form',
@@ -12,9 +13,10 @@ export class TweetFormComponent {
   successMessage: string = '';
   errorMessage: string = '';
 
+  @Output() tweetCreated = new EventEmitter<Tweet>(); // 💥 Evento
+
   constructor(private tweetService: TweetService) {}
 
-  // ✅ Captura la imagen al seleccionarla
   onImageSelected(event: any): void {
     const file = event.target.files[0];
     if (file && file.type.startsWith('image/')) {
@@ -24,7 +26,6 @@ export class TweetFormComponent {
     }
   }
 
-  // ✅ Enviar el tweet con texto e imagen opcional
   submitTweet(): void {
     if (!this.tweetText.trim()) {
       this.errorMessage = 'El tweet no puede estar vacío.';
@@ -32,7 +33,7 @@ export class TweetFormComponent {
     }
 
     const formData = new FormData();
-    formData.append('tweet', this.tweetText); // nombre correcto
+    formData.append('tweet', this.tweetText);
     if (this.selectedImage) {
       formData.append('image', this.selectedImage);
     }
@@ -40,6 +41,7 @@ export class TweetFormComponent {
     this.tweetService.createTweet(formData).subscribe({
       next: tweet => {
         this.successMessage = 'Tweet publicado ✅';
+        this.tweetCreated.emit(tweet); // 💥 Emitimos el tweet creado
         this.tweetText = '';
         this.selectedImage = null;
         this.errorMessage = '';

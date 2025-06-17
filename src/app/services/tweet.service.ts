@@ -22,20 +22,20 @@ export class TweetService {
   }
 
   // ✅ Crear tweet con texto e imagen opcional
-  createTweet(formData: FormData): Observable<Tweet> {
-    const token = this.storageService.getToken();
+createTweet(formData: FormData): Observable<Tweet> {
+  const token = this.storageService.getToken();
 
-    if (!token) {
-      console.warn("❌ No hay token, usuario no autenticado.");
-      return throwError(() => new Error('Token JWT no disponible'));
-    }
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
-    return this.http.post<Tweet>(`${this.apiURL}/create`, formData, { headers });
+  if (!token) {
+    console.warn("❌ No hay token, usuario no autenticado.");
+    return throwError(() => new Error('Token JWT no disponible'));
   }
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.post<Tweet>(`${this.apiURL}/create`, formData, { headers });
+}
 
   // Eliminar tweet
 deleteTweet(tweetId: number): Observable<any> {

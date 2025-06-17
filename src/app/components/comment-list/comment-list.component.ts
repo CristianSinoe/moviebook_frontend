@@ -15,6 +15,9 @@ export class CommentListComponent implements OnChanges {
   currentUser: string = '';
   activeCommentId: number | null = null;
 
+  visibleComments: { id: number, content: string, username: string, createdAt?: string }[] = [];
+  showAll: boolean = false;
+
   constructor(
     private commentService: CommentService,
     private storageService: StorageService
@@ -22,9 +25,10 @@ export class CommentListComponent implements OnChanges {
     this.currentUser = this.storageService.getUser() || '';
   }
 
-  // Verifica que los comentarios tengan ID cuando llegan
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['comments']) {
+      this.visibleComments = this.comments.slice(0, 2);
+      this.showAll = false;
       console.log('📥 Comentarios recibidos:', this.comments);
     }
   }
@@ -34,12 +38,10 @@ export class CommentListComponent implements OnChanges {
   }
 
   enableEdit(id: number, content: string): void {
-  this.editMode[id] = true;
-  this.editedContent[id] = content;
-
-  // 👇 Cerrar el menú de opciones al editar
-  this.activeCommentId = null;
-}
+    this.editMode[id] = true;
+    this.editedContent[id] = content;
+    this.activeCommentId = null; // 👈 Cierra el menú al entrar en edición
+  }
 
   cancelEdit(id: number): void {
     this.editMode[id] = false;
@@ -70,9 +72,15 @@ export class CommentListComponent implements OnChanges {
     this.commentService.deleteComment(id).subscribe({
       next: () => {
         this.comments = this.comments.filter(c => c.id !== id);
+        this.visibleComments = this.showAll ? this.comments : this.comments.slice(0, 2);
         this.activeCommentId = null;
       },
       error: err => console.error('❌ Error al eliminar comentario:', err)
     });
+  }
+
+  toggleComments(): void {
+    this.showAll = !this.showAll;
+    this.visibleComments = this.showAll ? this.comments : this.comments.slice(0, 2);
   }
 }

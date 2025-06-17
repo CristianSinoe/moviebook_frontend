@@ -43,4 +43,8 @@ export class LoginComponent {
 togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
+
+    logout() {
+  this.router.navigate(['']);
+}
 }

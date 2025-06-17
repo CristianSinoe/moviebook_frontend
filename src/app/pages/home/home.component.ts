@@ -148,4 +148,7 @@ toggleRemoveImage(): void {
   }
 }
 
+prependTweet(tweet: Tweet): void {
+  this.getTweets(); 
+}
 }
