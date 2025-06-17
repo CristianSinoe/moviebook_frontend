@@ -28,13 +28,13 @@ export class LoginComponent {
 
   this.authService.login(this.username, this.password).subscribe({
     next: data => {
-      console.log('✅ LOGIN OK', data);
-      this.storageService.setToken(data.accessToken);  // 👈 aquí estaba el error
+      console.log('LOGIN OK', data);
+      this.storageService.setToken(data.accessToken);
       this.storageService.setUser(data.username);
       this.router.navigate(['/home']);
     },
     error: err => {
-      this.errorMessage = 'Credenciales incorrectas o servidor fuera de línea.';
+      this.errorMessage = 'CREDENCIALES INCORRECTAS O SERVIDOR FUERA DE LINEA';
       console.error(err);
     }
   });

@@ -29,7 +29,7 @@ export class CommentListComponent implements OnChanges {
     if (changes['comments']) {
       this.visibleComments = this.comments.slice(0, 2);
       this.showAll = false;
-      console.log('📥 Comentarios recibidos:', this.comments);
+      console.log('📥 COMENTARIOS RECIBIDOS:', this.comments);
     }
   }
 
@@ -40,7 +40,7 @@ export class CommentListComponent implements OnChanges {
   enableEdit(id: number, content: string): void {
     this.editMode[id] = true;
     this.editedContent[id] = content;
-    this.activeCommentId = null; // 👈 Cierra el menú al entrar en edición
+    this.activeCommentId = null;
   }
 
   cancelEdit(id: number): void {
@@ -51,7 +51,7 @@ export class CommentListComponent implements OnChanges {
   saveEdit(id: number): void {
     const newContent = this.editedContent[id];
     if (!id || !newContent) {
-      console.error('❌ ID o contenido no válido al guardar');
+      console.error('❌ ID O CONTENIDO NO VALIDO AL GUARDAR');
       return;
     }
 
@@ -62,12 +62,12 @@ export class CommentListComponent implements OnChanges {
         this.editMode[id] = false;
         this.activeCommentId = null;
       },
-      error: err => console.error('❌ Error al actualizar comentario:', err)
+      error: err => console.error('❌ ERROR AL ACTUALIZAR COMENTARIO:', err)
     });
   }
 
   deleteComment(id: number): void {
-    if (!confirm('¿Eliminar este comentario?')) return;
+    if (!confirm('¿ELIMINAR ESTE COMENTARIO?')) return;
 
     this.commentService.deleteComment(id).subscribe({
       next: () => {
@@ -75,7 +75,7 @@ export class CommentListComponent implements OnChanges {
         this.visibleComments = this.showAll ? this.comments : this.comments.slice(0, 2);
         this.activeCommentId = null;
       },
-      error: err => console.error('❌ Error al eliminar comentario:', err)
+      error: err => console.error('❌ ERROR AL ELIMINAR ESTE COMENTARIO:', err)
     });
   }
 

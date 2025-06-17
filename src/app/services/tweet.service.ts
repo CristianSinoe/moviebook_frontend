@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs'; // ✅ Importar throwError
+import { Observable, throwError } from 'rxjs';
 import { Tweet } from '../models/tweets/Tweet';
 import { StorageService } from './storage.service';
 
@@ -9,7 +9,7 @@ import { StorageService } from './storage.service';
 })
 export class TweetService {
 
-  private apiURL = 'http://localhost:8080/api/tweets';
+  private apiURL = 'https://moviebook-backend-5cw6.onrender.com/api/tweets';
 
   constructor(
     private http: HttpClient,
@@ -22,32 +22,32 @@ export class TweetService {
   }
 
   // ✅ Crear tweet con texto e imagen opcional
-createTweet(formData: FormData): Observable<Tweet> {
-  const token = this.storageService.getToken();
+  createTweet(formData: FormData): Observable<Tweet> {
+    const token = this.storageService.getToken();
 
-  if (!token) {
-    console.warn("❌ No hay token, usuario no autenticado.");
-    return throwError(() => new Error('Token JWT no disponible'));
+    if (!token) {
+      console.warn("❌ No hay token, usuario no autenticado.");
+      return throwError(() => new Error('Token JWT no disponible'));
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.post<Tweet>(`${this.apiURL}/create`, formData, { headers });
   }
 
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
+  // ✅ Eliminar tweet
+  deleteTweet(tweetId: number): Observable<any> {
+    const token = this.storageService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
 
-  return this.http.post<Tweet>(`${this.apiURL}/create`, formData, { headers });
-}
+    return this.http.delete(`${this.apiURL}/${tweetId}`, { headers });
+  }
 
-  // Eliminar tweet
-deleteTweet(tweetId: number): Observable<any> {
-  const token = this.storageService.getToken();
-  const headers = new HttpHeaders({
-    'Authorization': 'Bearer ' + token
-  });
-
-  return this.http.delete(`${this.apiURL}/${tweetId}`, { headers });
-}
-
-// ✅ Actualizar tweet
+  // ✅ Actualizar tweet
   updateTweet(tweetId: number, formData: FormData): Observable<any> {
     const token = this.storageService.getToken();
     if (!token) return throwError(() => new Error('Token JWT no disponible'));

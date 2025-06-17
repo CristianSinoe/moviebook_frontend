@@ -14,6 +14,7 @@ export class ReactionButtonsComponent {
 
   react(reactionId: number) {
     this.reactionService.reactToTweet(this.tweetId, reactionId).subscribe();
+    this.refreshCounts();
   }
 
   reactByName(reaction: string) {
@@ -23,6 +24,7 @@ export class ReactionButtonsComponent {
 
   removeReaction() {
     this.reactionService.removeReaction(this.tweetId).subscribe();
+    this.refreshCounts();
   }
 
   getEmoji(reaction: string): string {
@@ -49,17 +51,23 @@ export class ReactionButtonsComponent {
 
   getTooltip(reaction: string): string {
     const tips: any = {
-      REACTION_LIKE: 'Like',
-      REACTION_LOVE: 'Love',
-      REACTION_HATE: 'Hate',
-      REACTION_SAD: 'Sad',
-      REACTION_ANGRY: 'Angry'
+      REACTION_LIKE: 'ME GUSTA',
+      REACTION_LOVE: 'ME ENCANTA',
+      REACTION_HATE: 'ME ENOJA',
+      REACTION_SAD: 'ME ENTRISTECE',
+      REACTION_ANGRY: 'ME DECEPCIONA'
     };
     return tips[reaction] || 'React';
   }
 
-  // ✅ Esta función es la que se llama desde el HTML
   getReactions(): string[] {
   return ['REACTION_LIKE', 'REACTION_LOVE', 'REACTION_HATE', 'REACTION_SAD', 'REACTION_ANGRY'];
 }
+
+refreshCounts() {
+  this.reactionService.getReactionCount(this.tweetId).subscribe(data => {
+    this.counts = data;
+  });
+}
+
 }

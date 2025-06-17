@@ -35,12 +35,12 @@ removeImage: boolean = false;
     this.getTweets();
   }
 
-  getTweets() {
+getTweets() {
   this.tweetService.getTweets().subscribe({
     next: data => {
       this.tweets = data.map(tweet => {
         if (tweet.imageUrl && !tweet.imageUrl.startsWith('http')) {
-          tweet.imageUrl = `http://localhost:8080${tweet.imageUrl}`;
+          tweet.imageUrl = `https://moviebook-backend-5cw6.onrender.com${tweet.imageUrl}`;
         }
         return tweet;
       });
@@ -76,12 +76,12 @@ toggleTweetOptions(tweetId: number) {
 }
 
 onDeleteTweet(tweetId: number) {
-  if (confirm('¿Estás seguro de que deseas eliminar este tweet? 🗑️')) {
+  if (confirm('¿ESTAS SEGURO QUE DESESAS ELIMINAR ESTE TWEET?')) {
     this.tweetService.deleteTweet(tweetId).subscribe({
       next: () => {
         this.tweets = this.tweets.filter(t => t.id !== tweetId);
       },
-      error: err => console.error('Error al eliminar tweet:', err)
+      error: err => console.error('ERROR AL ELIMINAR TWEET:', err)
     });
   }
 }
@@ -115,22 +115,19 @@ confirmEditTweet(): void {
   const formData = new FormData();
   formData.append('tweet', this.editedText);
 
-  // ✅ Agregar nueva imagen si se seleccionó
   if (this.editedImage) {
     formData.append('image', this.editedImage);
   }
 
-  // ✅ Indicador para eliminar la imagen actual si el checkbox está activado
   formData.append('removeImage', this.removeImage.toString());
 
-  // 🔄 Llamar al servicio de actualización
   this.tweetService.updateTweet(this.editedTweetId, formData).subscribe({
     next: () => {
-      this.getTweets();       // refresca los tweets
-      this.cancelEdit();      // cierra el modal y limpia estados
+      this.getTweets();       
+      this.cancelEdit();
     },
     error: (err: any) => {
-      console.error('Error al actualizar el tweet:', err);
+      console.error('ERROR AL ACTUALIZAR TWEEET:', err);
     }
   });
 }

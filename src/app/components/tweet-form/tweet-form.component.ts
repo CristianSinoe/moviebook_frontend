@@ -13,7 +13,7 @@ export class TweetFormComponent {
   successMessage: string = '';
   errorMessage: string = '';
 
-  @Output() tweetCreated = new EventEmitter<Tweet>(); // 💥 Evento
+  @Output() tweetCreated = new EventEmitter<Tweet>();
 
   constructor(private tweetService: TweetService) {}
 
@@ -40,8 +40,8 @@ export class TweetFormComponent {
 
     this.tweetService.createTweet(formData).subscribe({
       next: tweet => {
-        this.successMessage = 'Tweet publicado ✅';
-        this.tweetCreated.emit(tweet); // 💥 Emitimos el tweet creado
+        this.successMessage = 'Tweet publicado';
+        this.tweetCreated.emit(tweet);
         this.tweetText = '';
         this.selectedImage = null;
         this.errorMessage = '';

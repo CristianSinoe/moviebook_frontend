@@ -1,8 +1,8 @@
 <div class="mb-3 mt-4">
-  <h4 class="text-md text-green-800 font-semibold mb-2">Comentarios:</h4>
+  <h4 class="text-md text-green-800 font-semibold mb-2">COMENTARIOS:</h4>
 
   <div *ngIf="comments.length === 0" class="text-gray-500">
-    Aún no hay comentarios.
+    AUN NO HAY COMENTARIOS, SE EL PRIMERO
   </div>
 
   <div *ngFor="let comment of visibleComments" class="relative mb-3 p-3 rounded-lg bg-gray-50 shadow-md">
@@ -12,8 +12,8 @@
         ⋮
       </button>
       <div *ngIf="activeCommentId === comment.id" class="absolute right-0 mt-2 w-28 bg-white shadow rounded text-sm z-20">
-        <button class="w-full text-left px-3 py-1 text-red-600 hover:bg-red-100" (click)="enableEdit(comment.id, comment.content)">Editar</button>
-        <button class="w-full text-left px-3 py-1 text-red-600 hover:bg-red-100" (click)="deleteComment(comment.id)">Eliminar</button>
+        <button class="w-full text-left px-3 py-1 text-red-600 hover:bg-red-100" (click)="enableEdit(comment.id, comment.content)">EDITAR</button>
+        <button class="w-full text-left px-3 py-1 text-red-600 hover:bg-red-100" (click)="deleteComment(comment.id)">ELIMINAR</button>
       </div>
     </div>
     <br>
@@ -32,16 +32,16 @@
     <div *ngIf="editMode[comment.id]">
       <textarea [(ngModel)]="editedContent[comment.id]" rows="2"
         class="w-full p-2 mt-2 text-sm text-white rounded bg-black bg-opacity-30 placeholder-gray-300 border border-gray-600 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-        placeholder="Edita tu comentario..."></textarea>
+        placeholder="EDITA TU COMENTARIO.."></textarea>
 
       <div class="flex justify-end gap-2 mt-2">
         <button (click)="cancelEdit(comment.id)"
           class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded">
-          Cancelar
+          CANCELAR
         </button>
         <button (click)="saveEdit(comment.id)"
           class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
-          Guardar
+          GUARDAR
         </button>
       </div>
     </div>
@@ -50,7 +50,7 @@
   <!-- Botón para mostrar/ocultar comentarios si hay más de 2 -->
   <div *ngIf="comments.length > 2" class="flex justify-center mb-4">
     <button (click)="toggleComments()" class="text-blue-700 hover:underline font-semibold">
-      {{ showAll ? 'Ocultar comentarios' : 'Mostrar más comentarios' }}
+      {{ showAll ? 'OCULTAR COMENTARIOS' : 'MOSTRAR MAS COMENTARIOS' }}
     </button>
   </div>
 </div>

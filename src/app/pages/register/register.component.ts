@@ -23,22 +23,22 @@ export class RegisterComponent {
     this.successMessage = '';
 
     if (!this.username || !this.email || !this.password || !this.confirmPassword) {
-      this.errorMessage = 'Todos los campos son obligatorios.';
+      this.errorMessage = 'TODOS LOS CAMPOS SON OBLIGATORIOS';
       return;
     }
 
     if (this.password !== this.confirmPassword) {
-      this.errorMessage = 'Las contraseñas no coinciden.';
+      this.errorMessage = 'LAS CONTRASEÑAS NO COINCIDEN';
       return;
     }
 
     this.authService.register(this.username, this.email, this.password).subscribe({
       next: () => {
-        this.successMessage = 'Registro exitoso. Ahora puedes iniciar sesión.';
+        this.successMessage = 'REGISTRO EXITOSO AHORA PUEDE INICIAR SESION';
         setTimeout(() => this.router.navigate(['/login']), 2000);
       },
       error: err => {
-        this.errorMessage = err.error?.message || 'Error al registrar usuario.';
+        this.errorMessage = err.error?.message || 'ERROR AL REGISTRAR USUARIO';
         console.error(err);
       }
     });
